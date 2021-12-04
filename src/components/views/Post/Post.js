@@ -10,10 +10,18 @@ import styles from './Post.module.scss';
 
 const Component = ({className, children}) => (
   <div className={clsx(className, styles.root)}>
-    <h2>Post</h2>
+    <h2>---Post---</h2>
     {children}
   </div>
 );
+
+
+// const Component = ({className, children}) => (
+//   <div className={clsx(className, styles.root)}>
+//     <h2>Post</h2>
+//     {children}
+//   </div>
+// );
 
 Component.propTypes = {
   children: PropTypes.node,

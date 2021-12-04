@@ -31,7 +31,9 @@ const App = () => (
               <Route exact path={'/'}>
                 <Homepage isLoggedIn={true}/>
               </Route>
-              <Route exact path='/post/add' component={PostAdd} />
+              <Route exact path='/post/add' component={PostAdd}>
+                <PostAdd isLoggedIn={true}/>
+              </Route>
               <Route exact path='/post/:id' component={Post} />
               <Route exact path='/post/:id/edit' component={PostEdit} />
               <Route path='*' component={NotFound} />
