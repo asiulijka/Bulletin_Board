@@ -12,6 +12,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import {Link} from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUser } from '../../../redux/postsRedux.js';
@@ -155,7 +156,7 @@ const Component = ({className, user, children}) => {
           </Table>
         </TableContainer>
 
-        <Button variant="contained" sx={{ mt: 1 }} >Cancel</Button>
+        <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Save as draft</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Publish</Button>
 

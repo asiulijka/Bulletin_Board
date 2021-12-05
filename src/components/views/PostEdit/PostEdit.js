@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import {Link} from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUser, getPostDetails } from '../../../redux/postsRedux.js';
@@ -170,7 +171,7 @@ const Component = ({className, user, postDetails, children}) => {
           </Table>
         </TableContainer>
 
-        <Button variant="contained" sx={{ mt: 1 }} >Cancel</Button>
+        <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Save as draft</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Publish</Button>
 
@@ -178,17 +179,17 @@ const Component = ({className, user, postDetails, children}) => {
     );
   // user.isLoggedIn but this post was made by another user
   // } else if (user.isLoggedIn && !user.myPosts) {
-  } else if (!user.isLoggedIn) {
-    return (
-      <div className={clsx(className, styles.root)}>
-        <h2>Please log in to access this page</h2>
-      </div>
-    );
+  // } else if (!user.isLoggedIn) {
+  //   return (
+  //     <div className={clsx(className, styles.root)}>
+  //       <h2>Please log in to access this page</h2>
+  //     </div>
+  //   );
   } else {
   // !user.isLoggedIn - not logged in
     return (
       <div className={clsx(className, styles.root)}>
-        <h2>Please log in to access this page</h2>
+        <h2>You are not permitted to do changes to this post</h2>
       </div>
     );
   };

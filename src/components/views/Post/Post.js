@@ -4,56 +4,70 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser } from '../../../redux/postsRedux.js';
+import { getUser, getPostDetails } from '../../../redux/postsRedux.js';
 
 import styles from './Post.module.scss';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import Button from '@mui/material/Button';
+import {Link} from 'react-router-dom';
 
-const Component = ({className, user, allPosts, children}) => {
+
+const Component = ({className, user, postDetails, allPosts, children}) => {
 
   return (
     <div className={clsx(className, styles.root)}>
-      <h2>---One Post page ---</h2>
+                 
       {user.isLoggedIn &&
-        <h2>--Add page - Logged IN--</h2>
+        <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails.id}/edit`}>Edit post</Button>
       }
 
+      {postDetails.photo != "" &&
+        <ImageList sx={{ width: 500, height: 450 }} cols={1} rowHeight={164}>
+          <ImageListItem>
+            <img
+              src={postDetails.photo ? postDetails.photo : ""}
+            />
+          </ImageListItem>
+        </ImageList>
+      }
 
+      <p>Added on {postDetails.published}</p>
+      <p>Last update: {postDetails.actualised}</p>
 
+      <h1>{postDetails.title}</h1>
+      <h3>Description</h3>
+      <p>{postDetails.description}</p>
+
+      {postDetails.price != "" && postDetails.price != null &&
+        <h4>Price: $ {postDetails.price} </h4>
+      }
+
+      {postDetails.location != "" && postDetails.location != null &&
+        <h4>Location: {postDetails.location}</h4>
+      }
+
+      <h4>Contact me via email: {postDetails.email}</h4>
+      
+      {postDetails.phone != "" && postDetails.phone != null &&
+        <h4>Contact me via phone: {postDetails.phone}</h4>
+      }
     </div>
   );
 };
-
-
-
-
-
-
-// const Component = ({className, children}) => (
-//   <div className={clsx(className, styles.root)}>
-//     <h2>---Post---</h2>
-//     {children}
-//   </div>
-// );
-
-
-// const Component = ({className, children}) => (
-//   <div className={clsx(className, styles.root)}>
-//     <h2>Post</h2>
-//     {children}
-//   </div>
-// );
 
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
   user: getUser(state),
+  postDetails: getPostDetails(state, props.match.params.id)
 });
 
 const mapDispatchToProps = dispatch => ({
-  // someAction: arg => dispatch(reduxActionCreator(arg)),
+  // getPostDetails: id => dispatch(getPostDetails(id)),
 });
 
 const PostContainer = connect(mapStateToProps, mapDispatchToProps)(Component);

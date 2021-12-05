@@ -39,7 +39,7 @@ const Component = ({className, user, allPosts, children}) => {
               </TableCell>
               {user.isLoggedIn &&
                 <TableCell component="th" scope="row">
-                  <Button variant="contained" color="success" sx={{ mt: 1 }} component={Link} to={``}>Add new</Button>
+                  <Button variant="contained" color="success" sx={{ mt: 1 }} component={Link} to={`/post/add`}>Add new</Button>
                 </TableCell>
               }
             </TableRow>
@@ -55,7 +55,8 @@ const Component = ({className, user, allPosts, children}) => {
                 {row.title}
               </TableCell>
               <TableCell component="th" scope="row">
-                <Button variant="contained" sx={{ mt: 1 }} component={Link} to={``}>Check details</Button>
+                <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row.id}`}>Check details</Button>
+                
               </TableCell>
             </TableRow>
           ))}
