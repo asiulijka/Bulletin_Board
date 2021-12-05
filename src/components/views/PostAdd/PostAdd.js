@@ -10,18 +10,94 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import Grid from '@mui/material/Grid';
+
+import { connect } from 'react-redux';
+import { getUser } from '../../../redux/postsRedux.js';
 
 import styles from './PostAdd.module.scss';
 
-const Component = ({className, isLoggedIn, children}) => {
-  if(isLoggedIn){
+const Component = ({className, user, children}) => {
+  if(user.isLoggedIn){
     return(
       <div className={clsx(className, styles.root)}>
         <h2>Fill in required fields to add new post</h2>
 
-        <Box
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="outlined-required"
+              label="Required"
+              defaultValue="Add title"
+              helperText="Add title - min 10"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="outlined-multiline-static"
+              label="Required"
+              multiline
+              rows={4}
+              defaultValue="Add description"
+              helperText="Add description - min 20"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="outlined-required"
+              label="Required"
+              defaultValue="Add email"
+              helperText="Add email"
+            />
+          </Grid>
+          <h5>-Not Required-</h5>
+          <h5>Add the below to make your post more interesting</h5>
+          <Grid item xs={12}>
+            <OutlinedInput
+              id="outlined-basic"
+              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+              // label="Amount"
+              defaultValue="Add price"
+              // variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField 
+              id="outlined-basic" 
+              label="Add phone" 
+              // variant="outlined" 
+              defaultValue="Add phone number"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField 
+              id="outlined-basic" 
+              label="Add location" 
+              // variant="outlined" 
+              defaultValue="Add location"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <input
+              accept="image/*"
+              // className={classes.input}
+              style={{ display: 'none' }}
+              id="raised-button-file"
+              multiple
+              type="file"
+            />
+            <label htmlFor="raised-button-file">
+              <Button variant="outlined" component="span">
+                Upload photo
+              </Button>
+            </label> 
+          </Grid>
+        </Grid>
+
+        {/* <Box
           component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -61,7 +137,7 @@ const Component = ({className, isLoggedIn, children}) => {
           <h5>-Not Required-</h5>
           <h5>Add the below to make your post more interesting</h5>
 
-          {/* <div>
+          <div>
             <TextField 
               id="outlined-basic" 
               startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -70,10 +146,10 @@ const Component = ({className, isLoggedIn, children}) => {
               defaultValue="Add price"
             />
           </div> */}
-          <div>
-            <FormControl>
+          {/* <div>
+            <FormControl> */}
             {/* <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel> */}
-            <OutlinedInput
+            {/* <OutlinedInput
               id="outlined-basic"
               startAdornment={<InputAdornment position="start">$</InputAdornment>}
               // label="Amount"
@@ -81,24 +157,24 @@ const Component = ({className, isLoggedIn, children}) => {
               variant="outlined"
             />
             </FormControl>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <TextField 
               id="outlined-basic" 
               label="Outlined" 
               variant="outlined" 
               defaultValue="Add phone number"
             />
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <TextField 
               id="outlined-basic" 
               label="Outlined" 
               variant="outlined" 
               defaultValue="Add location"
             />
-          </div>
-
+          </div> */}
+{/* 
           <div>
             <input
               accept="image/*"
@@ -113,9 +189,9 @@ const Component = ({className, isLoggedIn, children}) => {
                 Upload photo
               </Button>
             </label> 
-          </div>
+          </div> */}
 
-        </Box>
+        {/* </Box> */}
         <Button variant="contained" sx={{ mt: 1 }} >Cancel</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Save as draft</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Publish</Button>
@@ -133,33 +209,23 @@ const Component = ({className, isLoggedIn, children}) => {
   };
 };
 
-
-
-
-// const Component = ({className, children}) => (
-//   <div className={clsx(className, styles.root)}>
-//     <h2>PostAdd</h2>
-//     {children}
-//   </div>
-// );
-
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  user: getUser(state),
+});
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = dispatch => ({
+  // someAction: arg => dispatch(reduxActionCreator(arg)),
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const PostAddContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as PostAdd,
-  // Container as PostAdd,
+  // Component as PostAdd,
+  PostAddContainer as PostAdd,
   Component as PostAddComponent,
 };

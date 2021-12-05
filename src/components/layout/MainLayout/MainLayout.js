@@ -4,20 +4,24 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import { Header } from '../Header/Header';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import { connect } from 'react-redux';
+import { getUser } from '../../../redux/postsRedux.js';
 
 import styles from './MainLayout.module.scss';
 
 
 
 
-const Component = ({className, isLoggedIn, children}) => {
+const Component = ({className, children}) => {
   return (
     <div className={clsx(className, styles.root)}>
-      <Header isLoggedIn={isLoggedIn} />
-      {children}
+      <Header />
+      <Container maxWidth='lg' sx={{ mt: 5 }}>
+        {children}
+      </Container>
     </div>
   )
 };
@@ -27,57 +31,18 @@ Component.propTypes = {
   className: PropTypes.string,
 };
 
+const mapStateToProps = state => ({
+  user: getUser(state),
+});
 
+const mapDispatchToProps = dispatch => ({
+  // someAction: arg => dispatch(reduxActionCreator(arg)),
+});
 
-
-// const Component = ({className, children }) => (
-
-  // <div className={clsx(className, styles.root)}>
-  //   <Header />
-  //   {children}
-  // </div>
-// );
-
-// const Component = ({className, isLoggedIn, children }) => {
-
-//   if(isLoggedIn){
-//     return (
-//       <div className={clsx(className, styles.root)}>
-//       <Header isLoggedIn={isLoggedIn} />
-//       {children}
-//     </div>
-//     )  
-//   } else {
-//     return (
-//       <div className={clsx(className, styles.root)}>
-//       <Header isLoggedIn={false} />
-//       {children}
-//     </div>
-//     )
-//   }
-// };
-
-// Component.propTypes = {
-//   children: PropTypes.node,
-//   className: PropTypes.string,
-// };
-
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-Component.propTypes = {
-  children: PropTypes.node,
-};
+const MainLayoutContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as MainLayout,
-  // Container as MainLayout,
+  // Component as MainLayout,
+  MainLayoutContainer as MainLayout,
   Component as MainLayoutComponent,
 };

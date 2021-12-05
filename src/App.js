@@ -29,10 +29,10 @@ const App = () => (
           <MainLayout>
             <Switch>
               <Route exact path={'/'}>
-                <Homepage isLoggedIn={true}/>
+                <Homepage/>
               </Route>
               <Route exact path='/post/add' component={PostAdd}>
-                <PostAdd isLoggedIn={true}/>
+                <PostAdd/>
               </Route>
               <Route exact path='/post/:id' component={Post} />
               <Route exact path='/post/:id/edit' component={PostEdit} />
