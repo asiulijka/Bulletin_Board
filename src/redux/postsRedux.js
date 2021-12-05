@@ -1,7 +1,13 @@
 /* selectors */
 export const getPosts = ({posts}) => posts.data;
 export const getPostDetails = ({posts}, postId) => posts.data.filter(e => e.id === postId)[0];
-export const getUserPosts = ({posts, user}) => posts.data.filter(e => e.email === user.data.email);
+export const getUserPosts = ({posts, user}) => {
+  if (user.data.type != 'admin'){
+    return posts.data.filter(e => e.email === user.data.email);
+  } else {
+    return posts.data;
+  };
+};
 export const getUser = ({user}) => user.data;
 
 /* action name creator */

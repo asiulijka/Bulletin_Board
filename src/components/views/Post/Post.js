@@ -15,7 +15,7 @@ import Button from '@mui/material/Button';
 import {Link} from 'react-router-dom';
 
 
-const Component = ({className, user, postDetails, allPosts, children}) => {
+const Component = ({className, user, postDetails}) => {
 
   if (!postDetails) {
     return (<Redirect to="/*" />);
@@ -23,7 +23,7 @@ const Component = ({className, user, postDetails, allPosts, children}) => {
     return (
       <div className={clsx(className, styles.root)}>
                   
-        {user.isLoggedIn &&
+        {user.isLoggedIn && (user.email == postDetails.email || user.type == 'admin') &&
           <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails.id}/edit`}>Edit post</Button>
         }
 

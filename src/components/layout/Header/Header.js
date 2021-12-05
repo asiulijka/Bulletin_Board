@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import clsx from 'clsx';
 
@@ -13,7 +13,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import { GoogleLogin } from 'react-google-login';
 
 import styles from './Header.module.scss';
 
@@ -26,8 +25,15 @@ const Component = ({className, user}) => {
           <AppBar position="static">
             <Container maxWidth='lg'>
               <Toolbar>
-                <NavLink to="/post/myposts" sx={{ flexGrow: 1 }}>Your Ads</NavLink>
-                <Button color="inherit"  sx={{ flexGrow: 1 }}>Log Out</Button>
+                <Button component={Link} to="/" color="inherit" sx={{ flexGrow: 1 }}>
+                  Home
+                </Button>
+                <Button component={Link} to="/post/myposts" color="inherit" sx={{ flexGrow: 1 }}>
+                  Your Ads
+                </Button>
+                <Button component={Link} to="/logout" color="inherit" sx={{ flexGrow: 1 }}>
+                  LOG OUT
+                </Button>
               </Toolbar>
             </Container>
           </AppBar>

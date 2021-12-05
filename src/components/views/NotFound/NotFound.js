@@ -10,13 +10,12 @@ import Button from '@mui/material/Button';
 
 import styles from './NotFound.module.scss';
 
-const Component = ({className, children}) => (
+const Component = ({className}) => (
   <div className={clsx(className, styles.root)}>
     <h2>Page not found</h2>
     <Button>
       <Link to="/">Go to homepage</Link>
     </Button>
-    {/* {children} */}
   </div>
 );
 

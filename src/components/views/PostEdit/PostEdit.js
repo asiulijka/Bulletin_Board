@@ -22,11 +22,9 @@ import { getUser, getPostDetails } from '../../../redux/postsRedux.js';
 import styles from './PostEdit.module.scss';
 
 
-const Component = ({className, user, postDetails, children}) => {
+const Component = ({className, user, postDetails}) => {
   
-  // user.isLoggedIn and this is this user post
-  // if(user.isLoggedIn && user.myPosts){
-  if(user.isLoggedIn){
+  if(user.isLoggedIn && (user.email == postDetails.email || user.type == 'admin')){
     return(
       <div className={clsx(className, styles.root)}>
         <h2>change fields to update post</h2>
@@ -45,7 +43,7 @@ const Component = ({className, user, postDetails, children}) => {
                     id="outlined-required"
                     label="Required"
                     placeholder="Add title"
-                    value={postDetails.title}
+                    defaultValue={postDetails.title}
                   />
                 </TableCell>
               </TableRow>
@@ -62,7 +60,7 @@ const Component = ({className, user, postDetails, children}) => {
                     multiline
                     rows={4}
                     placeholder="Add description"
-                    value={postDetails.description}
+                    defaultValue={postDetails.description}
                   />
                 </TableCell>
               </TableRow>
@@ -76,7 +74,7 @@ const Component = ({className, user, postDetails, children}) => {
                     id="outlined-required"
                     label="Required"
                     placeholder="Add email"
-                    value={postDetails.email}
+                    defaultValue={postDetails.email}
                   />
                 </TableCell>
               </TableRow>
@@ -107,7 +105,7 @@ const Component = ({className, user, postDetails, children}) => {
                     id="outlined-basic"
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     placeholder="Add price"
-                    value={postDetails.price ? postDetails.price : ""}
+                    defaultValue={postDetails.price ? postDetails.price : ""}
                   />
                 </TableCell>
               </TableRow>
@@ -120,7 +118,7 @@ const Component = ({className, user, postDetails, children}) => {
                     id="outlined-basic" 
                     label="Add phone" 
                     placeholder="Add phone number"
-                    value={postDetails.phone ? postDetails.phone : ""}
+                    defaultValue={postDetails.phone ? postDetails.phone : ""}
                   />
                 </TableCell>
               </TableRow>
@@ -133,7 +131,7 @@ const Component = ({className, user, postDetails, children}) => {
                     id="outlined-basic" 
                     label="Add location" 
                     placeholder="Add location"
-                    value={postDetails.location ? postDetails.location : ""}
+                    defaultValue={postDetails.location ? postDetails.location : ""}
                   />
                 </TableCell>
               </TableRow>
@@ -177,16 +175,7 @@ const Component = ({className, user, postDetails, children}) => {
 
       </div>
     );
-  // user.isLoggedIn but this post was made by another user
-  // } else if (user.isLoggedIn && !user.myPosts) {
-  // } else if (!user.isLoggedIn) {
-  //   return (
-  //     <div className={clsx(className, styles.root)}>
-  //       <h2>Please log in to access this page</h2>
-  //     </div>
-  //   );
   } else {
-  // !user.isLoggedIn - not logged in
     return (
       <div className={clsx(className, styles.root)}>
         <h2>You are not permitted to do changes to this post</h2>
@@ -194,15 +183,6 @@ const Component = ({className, user, postDetails, children}) => {
     );
   };
 };
-
-
-
-// const Component = ({className, children}) => (
-//   <div className={clsx(className, styles.root)}>
-//     <h2>PostEdit</h2>
-//     {children}
-//   </div>
-// );
 
 Component.propTypes = {
   children: PropTypes.node,

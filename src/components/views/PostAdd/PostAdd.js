@@ -21,15 +21,15 @@ import styles from './PostAdd.module.scss';
 
 const Component = ({className, user}) => {
   const [validationError, setValidationError] = React.useState(
-    {title: false, description: false, email: false});
+    {title: true, description: true, email: true});
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [email, setEmail] = React.useState("");
 
   const areAllValuesOk = () => {
-    const error = !Object.values(validationError).every(e => e === true);
-    console.log('areAllValuesOk: ', error);
-    return error;
+    const allOk = Object.values(validationError).every(e => e === false);
+    console.log('areAllValuesOk: ', allOk);
+    return allOk;
   };
 
   if(user.isLoggedIn){
@@ -57,7 +57,7 @@ const Component = ({className, user}) => {
                       setValidationError(
                         {
                           ...validationError, 
-                          title: title.length < 10,
+                          title: title.length < 9,
                         });
                     }}
                   />
@@ -82,7 +82,7 @@ const Component = ({className, user}) => {
                       setValidationError(
                         {
                           ...validationError, 
-                          description: description.length < 20,
+                          description: description.length < 19,
                         });
                     }}
                   />
@@ -104,20 +104,20 @@ const Component = ({className, user}) => {
                       setValidationError(
                         {
                           ...validationError, 
-                          email: /(.+)@(.+){2,}\.(.+){2,}/.test(email),
+                          email: !(/(.+)@(.+){2,}\.(.+){2,}/.test(email)),
                         });
                     }}
                   />
                 </TableCell>
               </TableRow>
-              <TableRow>
+              {/* <TableRow>
                 <TableCell component="th" scope="row">
 
                 </TableCell>
                 <TableCell component="th" scope="row">
 
                 </TableCell>
-              </TableRow>
+              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
@@ -183,21 +183,21 @@ const Component = ({className, user}) => {
                   </label> 
                 </TableCell>
               </TableRow>
-              <TableRow>
+              {/* <TableRow>
                 <TableCell component="th" scope="row">
 
                 </TableCell>
                 <TableCell component="th" scope="row">
 
                 </TableCell>
-              </TableRow>
+              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
 
         <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
-        <Button variant="contained" disabled={areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
-        <Button variant="contained" disabled={areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
+        <Button variant="contained" disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
+        <Button variant="contained" disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
 
       </div>
     );

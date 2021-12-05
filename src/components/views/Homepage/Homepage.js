@@ -19,7 +19,7 @@ import { getPosts, getUser } from '../../../redux/postsRedux.js';
 
 import styles from './Homepage.module.scss';
 
-const Component = ({className, user, allPosts, children}) => {
+const Component = ({className, user, allPosts}) => {
 
   return (
     <div className={clsx(className, styles.root)}>

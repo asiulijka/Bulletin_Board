@@ -27,7 +27,6 @@ const Component = ({className, myPosts, user}) => {
     return (
       <div className={clsx(className, styles.root)}>
         <h2>MyPosts</h2>
-        {/* {children} */}
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -38,11 +37,9 @@ const Component = ({className, myPosts, user}) => {
                     My Posts
                   </Typography>
                 </TableCell>
-                {/* {user.isLoggedIn && */}
                   <TableCell component="th" scope="row">
                     <Button variant="contained" color="success" sx={{ mt: 1 }} component={Link} to={`/post/add`}>Add new</Button>
                   </TableCell>
-                // }
               </TableRow>
             </TableHead>
 
@@ -50,7 +47,6 @@ const Component = ({className, myPosts, user}) => {
             {myPosts.map((row) => (
               <TableRow
                 key={row.id}
-      //                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
                   {row.title}
