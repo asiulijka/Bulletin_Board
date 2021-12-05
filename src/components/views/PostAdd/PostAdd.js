@@ -20,13 +20,14 @@ import { getUser } from '../../../redux/postsRedux.js';
 import styles from './PostAdd.module.scss';
 
 const Component = ({className, user}) => {
-  const [validationError, setValidationError] = React.useState({});
+  const [validationError, setValidationError] = React.useState(
+    {title: false, description: false, email: false});
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [email, setEmail] = React.useState("");
 
   const areAllValuesOk = () => {
-    const error = Object.values(validationError).every(e => e === false);
+    const error = !Object.values(validationError).every(e => e === true);
     console.log('areAllValuesOk: ', error);
     return error;
   };
@@ -50,13 +51,13 @@ const Component = ({className, user}) => {
                     id="outlined-required"
                     label="Required"
                     placeholder="Add title"
-                    error={title.length <= 10}
+                    error={title.length < 10}
                     onChange={event => {
                       setTitle(event.target.value);
                       setValidationError(
                         {
                           ...validationError, 
-                          title: title.length <= 10,
+                          title: title.length < 10,
                         });
                     }}
                   />
@@ -75,6 +76,15 @@ const Component = ({className, user}) => {
                     multiline
                     rows={4}
                     placeholder="Add description"
+                    error={description.length < 20}
+                    onChange={event => {
+                      setDescription(event.target.value);
+                      setValidationError(
+                        {
+                          ...validationError, 
+                          description: description.length < 20,
+                        });
+                    }}
                   />
                 </TableCell>
               </TableRow>
@@ -88,6 +98,15 @@ const Component = ({className, user}) => {
                     id="outlined-required"
                     label="Required"
                     placeholder="Add email"
+                    error={!(/(.+)@(.+){2,}\.(.+){2,}/.test(email))}
+                    onChange={event => {
+                      setEmail(event.target.value);
+                      setValidationError(
+                        {
+                          ...validationError, 
+                          email: /(.+)@(.+){2,}\.(.+){2,}/.test(email),
+                        });
+                    }}
                   />
                 </TableCell>
               </TableRow>
