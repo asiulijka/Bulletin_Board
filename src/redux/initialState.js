@@ -1,6 +1,8 @@
 export const initialState = {
   user: {
     data: {
+      email: 'jo@test.com',
+      type: 'user',
       isLoggedIn: true,
     },
     loading: {
@@ -18,10 +20,10 @@ export const initialState = {
         actualised: "2021-12-04",
         email: 'jo@test.com',
         status: 'published',
-        photo: null,
-        price: null,
-        phone: null,
-        location: null
+        photo: 'test_img_1.jpg',
+        price: 123,
+        phone: 601123123,
+        location: 'Earth'
       },
       {
         id: '154512485',
@@ -31,7 +33,7 @@ export const initialState = {
         actualised: "2021-12-04",
         email: 'jo@test.com',
         status: 'published',
-        photo: null,
+        photo: 'test_img_2.jpg',
         price: null,
         phone: null,
         location: null
@@ -44,7 +46,7 @@ export const initialState = {
         actualised: "2021-12-04",
         email: 'jo@test.com',
         status: 'published',
-        photo: null,
+        photo: 'test_img_3.jpg',
         price: null,
         phone: null,
         location: null

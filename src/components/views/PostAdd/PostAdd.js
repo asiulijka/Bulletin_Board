@@ -2,15 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-
-import Grid from '@mui/material/Grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 import { connect } from 'react-redux';
 import { getUser } from '../../../redux/postsRedux.js';
@@ -23,180 +24,140 @@ const Component = ({className, user, children}) => {
       <div className={clsx(className, styles.root)}>
         <h2>Fill in required fields to add new post</h2>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="outlined-required"
-              label="Required"
-              defaultValue="Add title"
-              helperText="Add title - min 10"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="outlined-multiline-static"
-              label="Required"
-              multiline
-              rows={4}
-              defaultValue="Add description"
-              helperText="Add description - min 20"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="outlined-required"
-              label="Required"
-              defaultValue="Add email"
-              helperText="Add email"
-            />
-          </Grid>
-          <h5>-Not Required-</h5>
-          <h5>Add the below to make your post more interesting</h5>
-          <Grid item xs={12}>
-            <OutlinedInput
-              id="outlined-basic"
-              startAdornment={<InputAdornment position="start">$</InputAdornment>}
-              // label="Amount"
-              defaultValue="Add price"
-              // variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField 
-              id="outlined-basic" 
-              label="Add phone" 
-              // variant="outlined" 
-              defaultValue="Add phone number"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField 
-              id="outlined-basic" 
-              label="Add location" 
-              // variant="outlined" 
-              defaultValue="Add location"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <input
-              accept="image/*"
-              // className={classes.input}
-              style={{ display: 'none' }}
-              id="raised-button-file"
-              multiple
-              type="file"
-            />
-            <label htmlFor="raised-button-file">
-              <Button variant="outlined" component="span">
-                Upload photo
-              </Button>
-            </label> 
-          </Grid>
-        </Grid>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableBody>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <p>Add title</p>
+                  <p> --At least 10 characters--</p>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Required"
+                    placeholder="Add title"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <p>Add description</p>
+                  <p> --At least 20 characters--</p>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <TextField
+                    required
+                    id="outlined-multiline-static"
+                    label="Required"
+                    multiline
+                    rows={4}
+                    placeholder="Add description"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <p>Add email</p>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Required"
+                    placeholder="Add email"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
 
-        {/* <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <div>
-            <TextField
-              required
-              id="outlined-required"
-              label="Required"
-              defaultValue="Add title"
-              helperText="Add title - min 10"
-            />
-          </div>
-          <div>
-            <TextField
-              required
-              id="outlined-multiline-static"
-              label="Required"
-              multiline
-              rows={4}
-              defaultValue="Add description"
-              helperText="Add description - min 20"
-            />
-          </div>
-          <div>
-            <TextField
-              required
-              id="outlined-required"
-              label="Required"
-              defaultValue="Add email"
-              helperText="Add email"
-            />
-          </div>
-          <h5>-Not Required-</h5>
-          <h5>Add the below to make your post more interesting</h5>
+                </TableCell>
+                <TableCell component="th" scope="row">
 
-          <div>
-            <TextField 
-              id="outlined-basic" 
-              startAdornment={<InputAdornment position="start">$</InputAdornment>}
-              label="Outlined" 
-              variant="outlined" 
-              defaultValue="Add price"
-            />
-          </div> */}
-          {/* <div>
-            <FormControl> */}
-            {/* <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel> */}
-            {/* <OutlinedInput
-              id="outlined-basic"
-              startAdornment={<InputAdornment position="start">$</InputAdornment>}
-              // label="Amount"
-              defaultValue="Add price"
-              variant="outlined"
-            />
-            </FormControl>
-          </div> */}
-          {/* <div>
-            <TextField 
-              id="outlined-basic" 
-              label="Outlined" 
-              variant="outlined" 
-              defaultValue="Add phone number"
-            />
-          </div> */}
-          {/* <div>
-            <TextField 
-              id="outlined-basic" 
-              label="Outlined" 
-              variant="outlined" 
-              defaultValue="Add location"
-            />
-          </div> */}
-{/* 
-          <div>
-            <input
-              accept="image/*"
-              // className={classes.input}
-              style={{ display: 'none' }}
-              id="raised-button-file"
-              multiple
-              type="file"
-            />
-            <label htmlFor="raised-button-file">
-              <Button variant="outlined" component="span">
-                Upload photo
-              </Button>
-            </label> 
-          </div> */}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-        {/* </Box> */}
+        <h5>-Not Required-</h5>
+        <h5>Add the below to make your post more interesting</h5>
+          
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableBody>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <p>Add price</p>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <OutlinedInput
+                    id="outlined-basic"
+                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                    placeholder="Add price"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <p>Add phone number</p>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <TextField 
+                    id="outlined-basic" 
+                    label="Add phone" 
+                    placeholder="Add phone number"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <p>Add location</p>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <TextField 
+                    id="outlined-basic" 
+                    label="Add location" 
+                    placeholder="Add location"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <p>Add attachment</p>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <input
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="raised-button-file"
+                    multiple
+                    type="file"
+                  />
+                  <label htmlFor="raised-button-file">
+                    <Button variant="outlined" component="span">
+                      Upload photo
+                    </Button>
+                  </label> 
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+
+                </TableCell>
+                <TableCell component="th" scope="row">
+
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+
         <Button variant="contained" sx={{ mt: 1 }} >Cancel</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Save as draft</Button>
         <Button variant="contained" sx={{ mt: 1 }} >Publish</Button>
-
-
 
       </div>
     );

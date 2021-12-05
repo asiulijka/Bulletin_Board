@@ -1,5 +1,10 @@
 /* selectors */
 export const getPosts = ({posts}) => posts.data;
+export const getPostDetails = ({posts}, postId) => {
+  const post = posts.data.filter(e => e.id === postId)[0];
+  console.log({posts}, postId, post);
+  return post;
+};
 export const getUser = ({user}) => user.data;
 
 /* action name creator */
