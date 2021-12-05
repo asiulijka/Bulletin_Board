@@ -23,11 +23,6 @@ const Component = ({className, user, allPosts, children}) => {
 
   return (
     <div className={clsx(className, styles.root)}>
-      
-      {user.isLoggedIn &&
-        <h2>--Homepage Logged IN--</h2>
-      }
-
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

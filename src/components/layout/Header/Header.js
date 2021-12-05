@@ -26,7 +26,7 @@ const Component = ({className, user}) => {
           <AppBar position="static">
             <Container maxWidth='lg'>
               <Toolbar>
-                <NavLink to="/link1" sx={{ flexGrow: 1 }}>Your Ads</NavLink>
+                <NavLink to="/post/myposts" sx={{ flexGrow: 1 }}>Your Ads</NavLink>
                 <Button color="inherit"  sx={{ flexGrow: 1 }}>Log Out</Button>
               </Toolbar>
             </Container>

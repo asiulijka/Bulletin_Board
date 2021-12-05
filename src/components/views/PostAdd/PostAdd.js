@@ -19,7 +19,18 @@ import { getUser } from '../../../redux/postsRedux.js';
 
 import styles from './PostAdd.module.scss';
 
-const Component = ({className, user, children}) => {
+const Component = ({className, user}) => {
+  const [validationError, setValidationError] = React.useState({});
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [email, setEmail] = React.useState("");
+
+  const areAllValuesOk = () => {
+    const error = Object.values(validationError).every(e => e === false);
+    console.log('areAllValuesOk: ', error);
+    return error;
+  };
+
   if(user.isLoggedIn){
     return(
       <div className={clsx(className, styles.root)}>
@@ -39,6 +50,15 @@ const Component = ({className, user, children}) => {
                     id="outlined-required"
                     label="Required"
                     placeholder="Add title"
+                    error={title.length <= 10}
+                    onChange={event => {
+                      setTitle(event.target.value);
+                      setValidationError(
+                        {
+                          ...validationError, 
+                          title: title.length <= 10,
+                        });
+                    }}
                   />
                 </TableCell>
               </TableRow>
@@ -157,8 +177,8 @@ const Component = ({className, user, children}) => {
         </TableContainer>
 
         <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
-        <Button variant="contained" sx={{ mt: 1 }} >Save as draft</Button>
-        <Button variant="contained" sx={{ mt: 1 }} >Publish</Button>
+        <Button variant="contained" disabled={areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
+        <Button variant="contained" disabled={areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
 
       </div>
     );

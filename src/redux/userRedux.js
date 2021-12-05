@@ -1,8 +1,5 @@
 /* selectors */
-export const getPosts = ({posts}) => posts.data;
-export const getPostDetails = ({posts}, postId) => posts.data.filter(e => e.id === postId)[0];
-export const getUserPosts = ({posts, user}) => posts.data.filter(e => e.email === user.data.email);
-export const getUser = ({user}) => user.data;
+export const getAll = ({posts}) => posts.data;
 
 /* action name creator */
 const reducerName = 'posts';

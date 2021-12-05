@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import  { Redirect } from 'react-router-dom';
+
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
@@ -15,45 +17,49 @@ import {Link} from 'react-router-dom';
 
 const Component = ({className, user, postDetails, allPosts, children}) => {
 
-  return (
-    <div className={clsx(className, styles.root)}>
-                 
-      {user.isLoggedIn &&
-        <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails.id}/edit`}>Edit post</Button>
-      }
+  if (!postDetails) {
+    return (<Redirect to="/*" />);
+  } else {
+    return (
+      <div className={clsx(className, styles.root)}>
+                  
+        {user.isLoggedIn &&
+          <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails.id}/edit`}>Edit post</Button>
+        }
 
-      {postDetails.photo != "" &&
-        <ImageList sx={{ width: 500, height: 450 }} cols={1} rowHeight={164}>
-          <ImageListItem>
-            <img
-              src={postDetails.photo ? postDetails.photo : ""}
-            />
-          </ImageListItem>
-        </ImageList>
-      }
+        {postDetails.photo != "" &&
+          <ImageList sx={{ width: 500, height: 450 }} cols={1} rowHeight={164}>
+            <ImageListItem>
+              <img
+                src={postDetails.photo ? postDetails.photo : ""}
+              />
+            </ImageListItem>
+          </ImageList>
+        }
 
-      <p>Added on {postDetails.published}</p>
-      <p>Last update: {postDetails.actualised}</p>
+        <p>Added on {postDetails.published}</p>
+        <p>Last update: {postDetails.actualised}</p>
 
-      <h1>{postDetails.title}</h1>
-      <h3>Description</h3>
-      <p>{postDetails.description}</p>
+        <h1>{postDetails.title}</h1>
+        <h3>Description</h3>
+        <p>{postDetails.description}</p>
 
-      {postDetails.price != "" && postDetails.price != null &&
-        <h4>Price: $ {postDetails.price} </h4>
-      }
+        {postDetails.price != "" && postDetails.price != null &&
+          <h4>Price: $ {postDetails.price} </h4>
+        }
 
-      {postDetails.location != "" && postDetails.location != null &&
-        <h4>Location: {postDetails.location}</h4>
-      }
+        {postDetails.location != "" && postDetails.location != null &&
+          <h4>Location: {postDetails.location}</h4>
+        }
 
-      <h4>Contact me via email: {postDetails.email}</h4>
-      
-      {postDetails.phone != "" && postDetails.phone != null &&
-        <h4>Contact me via phone: {postDetails.phone}</h4>
-      }
-    </div>
-  );
+        <h4>Contact me via email: {postDetails.email}</h4>
+        
+        {postDetails.phone != "" && postDetails.phone != null &&
+          <h4>Contact me via phone: {postDetails.phone}</h4>
+        }
+      </div>
+    );
+  };
 };
 
 Component.propTypes = {
