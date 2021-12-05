@@ -12,24 +12,71 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Link} from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { getUser } from '../../../redux/postsRedux.js';
+import { getUser, addPost } from '../../../redux/postsRedux.js';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from './PostAdd.module.scss';
 
-const Component = ({className, user}) => {
+const Component = ({className, user, addPost}) => {
   const [validationError, setValidationError] = React.useState(
     {title: true, description: true, email: true});
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [price, setPrice] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [location, setLocation] = React.useState("");
+  const [attachment, setAttachment] = React.useState("");
+  const [status, setStatus] = React.useState("");
 
   const areAllValuesOk = () => {
     const allOk = Object.values(validationError).every(e => e === false);
     console.log('areAllValuesOk: ', allOk);
     return allOk;
+  };
+
+  const publish = () => {
+    setStatus('published');
+    const payload = {
+      id: uuidv4(),
+      title: title,
+      description: description,
+      published: new Date().toISOString(),
+      actualised: new Date().toISOString(),
+      email: email,
+      userId: user.id,
+      status: status,
+      photo: attachment,
+      price: price,
+      phone: phone,
+      location: location,
+    };
+    addPost(payload);
+    return <Redirect to="/post/myposts" />;
+  };
+
+  const saveDraft = () => {
+    setStatus('draft');
+    const payload = {
+      id: uuidv4(),
+      title: title,
+      description: description,
+      published: new Date().toISOString(),
+      actualised: new Date().toISOString(),
+      email: email,
+      userId: user.id,
+      status: status,
+      photo: attachment,
+      price: price,
+      phone: phone,
+      location: location,
+    };
+    addPost(payload);
+    return <Redirect to="/post/myposts" />;
   };
 
   if(user.isLoggedIn){
@@ -137,6 +184,7 @@ const Component = ({className, user}) => {
                     id="outlined-basic"
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     placeholder="Add price"
+                    onChange={event => setPrice(event.target.value)}
                   />
                 </TableCell>
               </TableRow>
@@ -149,6 +197,7 @@ const Component = ({className, user}) => {
                     id="outlined-basic" 
                     label="Add phone" 
                     placeholder="Add phone number"
+                    onChange={event => setPhone(event.target.value)}
                   />
                 </TableCell>
               </TableRow>
@@ -161,6 +210,7 @@ const Component = ({className, user}) => {
                     id="outlined-basic" 
                     label="Add location" 
                     placeholder="Add location"
+                    onChange={event => setLocation(event.target.value)}
                   />
                 </TableCell>
               </TableRow>
@@ -175,6 +225,7 @@ const Component = ({className, user}) => {
                     id="raised-button-file"
                     multiple
                     type="file"
+                    onChange={event => setAttachment(event.target.value)}
                   />
                   <label htmlFor="raised-button-file">
                     <Button variant="outlined" component="span">
@@ -196,8 +247,8 @@ const Component = ({className, user}) => {
         </TableContainer>
 
         <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
-        <Button variant="contained" disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
-        <Button variant="contained" disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
+        <Button variant="contained" onClick={() => saveDraft()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
+        <Button variant="contained" onClick={() => publish()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
 
       </div>
     );
@@ -220,7 +271,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // someAction: arg => dispatch(reduxActionCreator(arg)),
+  addPost: post => dispatch(addPost(post)),
 });
 
 const PostAddContainer = connect(mapStateToProps, mapDispatchToProps)(Component);

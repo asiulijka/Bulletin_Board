@@ -1,6 +1,7 @@
 export const initialState = {
   user: {
     data: {
+      id: 1,
       email: 'jo@test.com',
       type: 'user',
       isLoggedIn: true,
@@ -19,6 +20,7 @@ export const initialState = {
         published: "2021-12-03",
         actualised: "2021-12-04",
         email: 'jo@test.com',
+        userId: 1,
         status: 'published',
         photo: 'https://images.pexels.com/photos/10281406/pexels-photo-10281406.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
         price: 600,
@@ -32,6 +34,7 @@ export const initialState = {
         published: "2021-12-03",
         actualised: "2021-12-04",
         email: 'jo@test.com',
+        userId: 1,
         status: 'published',
         photo: 'https://images.pexels.com/photos/5270341/pexels-photo-5270341.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
         price: 15,
@@ -45,6 +48,7 @@ export const initialState = {
         published: "2021-12-03",
         actualised: "2021-12-04",
         email: 'inny@test.com',
+        userId: 2,
         status: 'published',
         photo: '',
         price: null,
@@ -58,6 +62,7 @@ export const initialState = {
         published: "2021-12-03",
         actualised: "2021-12-04",
         email: 'jo@test.com',
+        userId: 1,
         status: 'draft',
         photo: '',
         price: null,
@@ -71,6 +76,7 @@ export const initialState = {
         published: "2021-12-03",
         actualised: "2021-12-04",
         email: 'inny@test.com',
+        userId: 2,
         status: 'closed',
         photo: 'https://images.pexels.com/photos/10401243/pexels-photo-10401243.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
         price: 12,

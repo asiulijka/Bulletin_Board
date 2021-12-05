@@ -23,7 +23,7 @@ const Component = ({className, user, postDetails}) => {
     return (
       <div className={clsx(className, styles.root)}>
                   
-        {user.isLoggedIn && (user.email == postDetails.email || user.type == 'admin') &&
+        {user.isLoggedIn && (user.id == postDetails.userId || user.type == 'admin') &&
           <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails.id}/edit`}>Edit post</Button>
         }
 
