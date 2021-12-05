@@ -12,7 +12,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUser, addPost } from '../../../redux/postsRedux.js';
@@ -32,6 +32,8 @@ const Component = ({className, user, addPost}) => {
   const [location, setLocation] = React.useState("");
   const [attachment, setAttachment] = React.useState("");
   const [status, setStatus] = React.useState("");
+
+  const history = useHistory();
 
   const areAllValuesOk = () => {
     const allOk = Object.values(validationError).every(e => e === false);
@@ -56,7 +58,7 @@ const Component = ({className, user, addPost}) => {
       location: location,
     };
     addPost(payload);
-    return <Redirect to="/post/myposts" />;
+    history.push("/post/myposts");
   };
 
   const saveDraft = () => {
@@ -76,7 +78,7 @@ const Component = ({className, user, addPost}) => {
       location: location,
     };
     addPost(payload);
-    return <Redirect to="/post/myposts" />;
+    history.push("/post/myposts");
   };
 
   if(user.isLoggedIn){

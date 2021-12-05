@@ -14,15 +14,73 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import {Link} from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { getUser, getPostDetails } from '../../../redux/postsRedux.js';
+import { getUser, getPostDetails, updatePost } from '../../../redux/postsRedux.js';
 
 import styles from './PostEdit.module.scss';
 
 
-const Component = ({className, user, postDetails}) => {
+const Component = ({className, user, postDetails, updatePost}) => {
+  const [validationError, setValidationError] = React.useState(
+    {title: false, description: false, email: false});
+  const [title, setTitle] = React.useState(postDetails.title);
+  const [description, setDescription] = React.useState(postDetails.description);
+  const [email, setEmail] = React.useState(postDetails.email);
+  const [price, setPrice] = React.useState(postDetails.price);
+  const [phone, setPhone] = React.useState(postDetails.phone);
+  const [location, setLocation] = React.useState(postDetails.location);
+  const [attachment, setAttachment] = React.useState(postDetails.attachment);
+  const [status, setStatus] = React.useState(postDetails.status);
+  
+  const history = useHistory();
+
+  const areAllValuesOk = () => {
+    const allOk = Object.values(validationError).every(e => e === false);
+    console.log('areAllValuesOk: ', allOk);
+    return allOk;
+  };
+
+  const publish = () => {
+    setStatus('published');
+    const payload = {
+      id: postDetails.id,
+      title: title,
+      description: description,
+      published: postDetails.published,
+      actualised: new Date().toISOString(),
+      email: email,
+      userId: postDetails.userId,
+      status: status,
+      photo: attachment,
+      price: price,
+      phone: phone,
+      location: location,
+    };
+    updatePost(payload);
+    history.push("/post/myposts");
+  };
+
+  const saveDraft = () => {
+    setStatus('draft');
+    const payload = {
+      id: postDetails.id,
+      title: title,
+      description: description,
+      published: postDetails.published,
+      actualised: new Date().toISOString(),
+      email: email,
+      userId: postDetails.userId,
+      status: status,
+      photo: attachment,
+      price: price,
+      phone: phone,
+      location: location,
+    };
+    updatePost(payload);
+    history.push("/post/myposts");
+  };
   
   if(postDetails) {
     if(user.isLoggedIn && (user.id == postDetails.userId || user.type == 'admin')){
@@ -45,6 +103,15 @@ const Component = ({className, user, postDetails}) => {
                       label="Required"
                       placeholder="Add title"
                       defaultValue={postDetails.title}
+                      error={title.length < 10}
+                      onChange={event => {
+                        setTitle(event.target.value);
+                        setValidationError(
+                          {
+                            ...validationError, 
+                            title: title.length < 9,
+                          });
+                      }}
                     />
                   </TableCell>
                 </TableRow>
@@ -62,6 +129,15 @@ const Component = ({className, user, postDetails}) => {
                       rows={4}
                       placeholder="Add description"
                       defaultValue={postDetails.description}
+                      error={description.length < 20}
+                      onChange={event => {
+                        setDescription(event.target.value);
+                        setValidationError(
+                          {
+                            ...validationError, 
+                            description: description.length < 19,
+                          });
+                      }}
                     />
                   </TableCell>
                 </TableRow>
@@ -76,6 +152,15 @@ const Component = ({className, user, postDetails}) => {
                       label="Required"
                       placeholder="Add email"
                       defaultValue={postDetails.email}
+                      error={!(/(.+)@(.+){2,}\.(.+){2,}/.test(email))}
+                      onChange={event => {
+                        setEmail(event.target.value);
+                        setValidationError(
+                          {
+                            ...validationError, 
+                            email: !(/(.+)@(.+){2,}\.(.+){2,}/.test(email)),
+                          });
+                      }}
                     />
                   </TableCell>
                 </TableRow>
@@ -107,6 +192,7 @@ const Component = ({className, user, postDetails}) => {
                       startAdornment={<InputAdornment position="start">$</InputAdornment>}
                       placeholder="Add price"
                       defaultValue={postDetails.price ? postDetails.price : ""}
+                      onChange={event => setPrice(event.target.value)}
                     />
                   </TableCell>
                 </TableRow>
@@ -120,6 +206,7 @@ const Component = ({className, user, postDetails}) => {
                       label="Add phone" 
                       placeholder="Add phone number"
                       defaultValue={postDetails.phone ? postDetails.phone : ""}
+                      onChange={event => setPhone(event.target.value)}
                     />
                   </TableCell>
                 </TableRow>
@@ -133,6 +220,7 @@ const Component = ({className, user, postDetails}) => {
                       label="Add location" 
                       placeholder="Add location"
                       defaultValue={postDetails.location ? postDetails.location : ""}
+                      onChange={event => setLocation(event.target.value)}
                     />
                   </TableCell>
                 </TableRow>
@@ -147,6 +235,7 @@ const Component = ({className, user, postDetails}) => {
                       id="raised-button-file"
                       multiple
                       type="file"
+                      onChange={event => setAttachment(event.target.value)}
                     />
                     <label htmlFor="raised-button-file">
                       <Button variant="outlined" component="span">
@@ -171,8 +260,8 @@ const Component = ({className, user, postDetails}) => {
           </TableContainer>
 
           <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
-          <Button variant="contained" sx={{ mt: 1 }} >Save as draft</Button>
-          <Button variant="contained" sx={{ mt: 1 }} >Publish</Button>
+          <Button variant="contained" onClick={() => saveDraft()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
+          <Button variant="contained" onClick={() => publish()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
 
         </div>
       );
@@ -203,7 +292,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // getPostDetails: id => dispatch(getPostDetails(id)),
+  updatePost: post => dispatch(updatePost(post)),
 });
 
 const PostEditContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
