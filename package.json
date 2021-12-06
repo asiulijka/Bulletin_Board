@@ -2,7 +2,6 @@
   "name": "bulletin-board",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000/",
   "scripts": {
     "start": "run-p start:* ",
     "start-silent": "run-p start > /dev/null",

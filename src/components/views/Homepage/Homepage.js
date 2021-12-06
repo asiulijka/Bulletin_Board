@@ -13,9 +13,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { connect } from 'react-redux';
-import { getPosts, getUser, fetchAllPosts, getPostsLoadingState, fetchPost } from '../../../redux/postsRedux.js';
+import { getPublishedPosts, getUser, fetchAllPosts, getPostsLoadingState, fetchPost } from '../../../redux/postsRedux.js';
 
 import styles from './Homepage.module.scss';
 
@@ -25,50 +27,54 @@ const Component = ({className, user, allPosts, fetchAllPosts, postsLoadingState}
     fetchAllPosts();
   }, []);
 
-  return (
-    <div className={clsx(className, styles.root)}>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <Typography variant="h5" component="div" gutterBottom>
-                  Latest bulletins
-                </Typography>
-              </TableCell>
-              {user.isLoggedIn &&
-                <TableCell component="th" scope="row">
-                  <Button variant="contained" color="success" sx={{ mt: 1 }} component={Link} to={`/post/add`}>Add new</Button>
+  if (postsLoadingState.active){
+    return (
+      <Container sx={{ textAlign: 'center' }}>
+        <CircularProgress />
+      </Container>
+    );
+  } else {
+    return (
+      <div className={clsx(className, styles.root)}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    Latest bulletins
+                  </Typography>
                 </TableCell>
+                {user.isLoggedIn &&
+                  <TableCell component="th" scope="row">
+                    <Button variant="contained" color="success" sx={{ mt: 1 }} component={Link} to={`/post/add`}>Add new</Button>
+                  </TableCell>
+                }
+              </TableRow>
+            </TableHead>
+  
+            <TableBody>
+              {
+                allPosts.map((row) => (
+                  <TableRow
+                    key={row._id}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.title}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row._id}`}>Check details</Button>
+                      
+                    </TableCell>
+                  </TableRow>
+                ))
               }
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {postsLoadingState.active ? 
-              <Typography component='div' variant='p'>LOADING</Typography>
-              :
-              allPosts.map((row) => (
-                <TableRow
-                  key={row._id}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.title}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row._id}`}>Check details</Button>
-                    
-                  </TableCell>
-                </TableRow>
-              ))
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-
-    </div>
-  );
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    );
+  };
 };
 
 Component.propTypes = {
@@ -82,7 +88,7 @@ Component.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  allPosts: getPosts(state),
+  allPosts: getPublishedPosts(state),
   user: getUser(state),
   postsLoadingState: getPostsLoadingState(state),
 });
@@ -93,10 +99,10 @@ const mapDispatchToProps = dispatch => ({
   fetchPost: id => dispatch(fetchPost(id)),
 });
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const HomepageContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   // Component as Homepage,
-  Container as Homepage,
+  HomepageContainer as Homepage,
   Component as HomepageComponent,
 };

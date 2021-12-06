@@ -29,4 +29,18 @@ router.get('/posts/:id', async (req, res) => {
   }
 });
 
+router.get('/user/:email/posts/', async (req, res) => {
+  try {
+    const result = await Post
+      .find({email: req.params.email})
+      .select('email published title photo')
+      .sort({published: -1});
+    if(!result) res.status(404).json({ post: 'Not found' });
+    else res.json(result);
+  }
+  catch(err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

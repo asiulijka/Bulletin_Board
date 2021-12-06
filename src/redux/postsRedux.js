@@ -1,12 +1,13 @@
 import Axios from 'axios';
 
 /* selectors */
-export const getPosts = ({posts}) => posts.data;
+export const getAllPosts = ({posts}) => posts.data;
+export const getPublishedPosts = ({posts}) => posts.data.filter(e => e.published !== null);
 export const getPostsLoadingState = ({posts}) => posts.loading;
 export const getPostDetails = ({posts}, postId) => posts.data.filter(e => e._id === postId)[0];
 export const getUserPosts = ({posts, user}) => {
   if (user.data.type !== 'admin'){
-    return posts.data.filter(e => e.userId === user.data._id);
+    return posts.data.filter(e => e.email === user.data.email);
   } else {
     return posts.data;
   }
@@ -18,9 +19,13 @@ const reducerName = 'posts';
 const createActionName = name => `app/${reducerName}/${name}`;
 
 /* action types */
-const FETCH_START = createActionName('FETCH_START');
-const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
-const FETCH_ERROR = createActionName('FETCH_ERROR');
+const FETCH_PUBLISHED_POSTS_START = createActionName('FETCH_PUBLISHED_POSTS_START');
+const FETCH_PUBLISHED_POSTS_SUCCESS = createActionName('FETCH_PUBLISHED_POSTS_SUCCESS');
+const FETCH_PUBLISHED_POSTS_ERROR = createActionName('FETCH_PUBLISHED_POSTS_ERROR');
+
+const FETCH_USER_POSTS_START = createActionName('FETCH_USER_POSTS_START');
+const FETCH_USER_POSTS_SUCCESS = createActionName('FETCH_USER_POSTS_SUCCESS');
+const FETCH_USER_POSTS_ERROR = createActionName('FETCH_USER_POSTS_ERROR');
 
 const FETCH_POST_START = createActionName('FETCH_POST_START');
 const FETCH_POST_SUCCESS = createActionName('FETCH_POST_SUCCESS');
@@ -35,9 +40,13 @@ const POST_UPDATE_SUCCESS = createActionName('POST_UPDATE_SUCCESS');
 const POST_UPDATE_ERROR = createActionName('POST_UPDATE_ERROR');
 
 /* action creators */
-export const fetchPostsStarted = payload => ({ payload, type: FETCH_START });
-export const fetchPostsSuccess = payload => ({ payload, type: FETCH_SUCCESS });
-export const fetchPostsError = payload => ({ payload, type: FETCH_ERROR });
+export const fetchPublishedPostsStarted = payload => ({ payload, type: FETCH_PUBLISHED_POSTS_START });
+export const fetchPublishedPostsSuccess = payload => ({ payload, type: FETCH_PUBLISHED_POSTS_SUCCESS });
+export const fetchPublishedPostsError = payload => ({ payload, type: FETCH_PUBLISHED_POSTS_ERROR });
+
+export const fetchUserPostsStarted = payload => ({ payload, type: FETCH_USER_POSTS_START });
+export const fetchUserPostsSuccess = payload => ({ payload, type: FETCH_USER_POSTS_SUCCESS });
+export const fetchUserPostsError = payload => ({ payload, type: FETCH_USER_POSTS_ERROR });
 
 export const fetchPostStarted = payload => ({ payload, type: FETCH_POST_START });
 export const fetchPostSuccess = payload => ({ payload, type: FETCH_POST_SUCCESS });
@@ -54,15 +63,30 @@ export const postUpdateError = payload => ({ payload, type: POST_UPDATE_ERROR })
 /* thunk creators */
 export const fetchAllPosts = () => {
   return (dispatch, getState) => {
-    dispatch(fetchPostsStarted());
+    dispatch(fetchPublishedPostsStarted());
 
     Axios
       .get(`http://localhost:8000/api/posts`)
       .then(res => {
-        dispatch(fetchPostsSuccess(res.data));
+        dispatch(fetchPublishedPostsSuccess(res.data));
       })
       .catch(err => {
-        dispatch(fetchPostsError(err.message || true));
+        dispatch(fetchPublishedPostsError(err.message || true));
+      });
+  };
+};
+
+export const fetchUserPosts = (userEmail) => {
+  return (dispatch, getState) => {
+    dispatch(fetchUserPostsStarted());
+
+    Axios
+      .get(`http://localhost:8000/api/user/${userEmail}/posts`)
+      .then(res => {
+        dispatch(fetchUserPostsSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchUserPostsError(err.message || true));
       });
   };
 };
@@ -117,7 +141,7 @@ export const updatePost = post => {
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
   switch (action.type) {
-    case FETCH_START: {
+    case FETCH_PUBLISHED_POSTS_START: {
       return {
         ...statePart,
         loading: {
@@ -126,7 +150,7 @@ export const reducer = (statePart = [], action = {}) => {
         },
       };
     }
-    case FETCH_SUCCESS: {
+    case FETCH_PUBLISHED_POSTS_SUCCESS: {
       return {
         ...statePart,
         loading: {
@@ -136,7 +160,36 @@ export const reducer = (statePart = [], action = {}) => {
         data: action.payload,
       };
     }
-    case FETCH_ERROR: {
+    case FETCH_PUBLISHED_POSTS_ERROR: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: action.payload,
+        },
+      };
+    }
+
+    case FETCH_USER_POSTS_START: {
+      return {
+        ...statePart,
+        loading: {
+          active: true,
+          error: false,
+        },
+      };
+    }
+    case FETCH_USER_POSTS_SUCCESS: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: false,
+        },
+        data: action.payload,
+      };
+    }
+    case FETCH_USER_POSTS_ERROR: {
       return {
         ...statePart,
         loading: {
@@ -162,7 +215,7 @@ export const reducer = (statePart = [], action = {}) => {
           active: false,
           error: false,
         },
-        data: statePart.data.map(e => e.id === action.payload.id ? action.payload : e),
+        data: statePart.data.map(e => e._id === action.payload._id ? action.payload : e),
       };
     }
     case FETCH_POST_ERROR: {
