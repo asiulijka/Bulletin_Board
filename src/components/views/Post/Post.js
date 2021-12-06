@@ -6,7 +6,7 @@ import  { Redirect } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser, getPostDetails } from '../../../redux/postsRedux.js';
+import { getUser, getPostDetails, fetchPost } from '../../../redux/postsRedux.js';
 
 import styles from './Post.module.scss';
 import ImageList from '@mui/material/ImageList';
@@ -15,7 +15,13 @@ import Button from '@mui/material/Button';
 import {Link} from 'react-router-dom';
 
 
-const Component = ({className, user, postDetails}) => {
+const Component = ({className, match: {params: {id}}, user, postDetails, fetchPost}) => {
+
+  React.useEffect(() => {
+    fetchPost(id);
+  }, []);
+
+  console.log(postDetails);
 
   if (!postDetails) {
     return (<Redirect to="/*" />);
@@ -23,8 +29,8 @@ const Component = ({className, user, postDetails}) => {
     return (
       <div className={clsx(className, styles.root)}>
                   
-        {user.isLoggedIn && (user.id === postDetails.userId || user.type === 'admin') &&
-          <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails.id}/edit`}>Edit post</Button>
+        {user.isLoggedIn && (user._id === postDetails.userId || user.type === 'admin') &&
+          <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails._id}/edit`}>Edit post</Button>
         }
 
         {postDetails.photo !== '' &&
@@ -67,7 +73,8 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   user: PropTypes.object,
-  postDetails: PropTypes.object,
+  // postDetails: PropTypes.object,
+  fetchPost: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => ({
@@ -77,6 +84,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => ({
   // getPostDetails: id => dispatch(getPostDetails(id)),
+  fetchPost: id => dispatch(fetchPost(id)),
 });
 
 const PostContainer = connect(mapStateToProps, mapDispatchToProps)(Component);

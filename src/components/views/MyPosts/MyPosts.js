@@ -45,13 +45,13 @@ const Component = ({className, myPosts, user}) => {
               {
                 myPosts.map((row) => (
                   <TableRow
-                    key={row.id}
+                    key={row._id}
                   >
                     <TableCell component="th" scope="row">
                       {row.title}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row.id}`}>Check details</Button>
+                      <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row._id}`}>Check details</Button>
                       
                     </TableCell>
                   </TableRow>

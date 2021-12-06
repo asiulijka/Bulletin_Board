@@ -1,8 +1,8 @@
 /* selectors */
-export const getAll = ({posts}) => posts.data;
+export const getAll = ({users}) => users.data;
 
 /* action name creator */
-const reducerName = 'posts';
+const reducerName = 'users';
 const createActionName = name => `app/${reducerName}/${name}`;
 
 /* action types */

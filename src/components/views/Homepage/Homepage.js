@@ -15,11 +15,15 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 import { connect } from 'react-redux';
-import { getPosts, getUser } from '../../../redux/postsRedux.js';
+import { getPosts, getUser, fetchAllPosts, getPostsLoadingState, fetchPost } from '../../../redux/postsRedux.js';
 
 import styles from './Homepage.module.scss';
 
-const Component = ({className, user, allPosts}) => {
+const Component = ({className, user, allPosts, fetchAllPosts, postsLoadingState}) => {
+
+  React.useEffect(() => {
+    fetchAllPosts();
+  }, []);
 
   return (
     <div className={clsx(className, styles.root)}>
@@ -41,16 +45,18 @@ const Component = ({className, user, allPosts}) => {
           </TableHead>
 
           <TableBody>
-            {
+            {postsLoadingState.active ? 
+              <Typography component='div' variant='p'>LOADING</Typography>
+              :
               allPosts.map((row) => (
                 <TableRow
-                  key={row.id}
+                  key={row._id}
                 >
                   <TableCell component="th" scope="row">
                     {row.title}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row.id}`}>Check details</Button>
+                    <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row._id}`}>Check details</Button>
                     
                   </TableCell>
                 </TableRow>
@@ -69,16 +75,22 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   user: PropTypes.object,
+  postsLoadingState: PropTypes.object, 
   allPosts: PropTypes.array,
+  fetchAllPosts: PropTypes.func,
+  fetchPost: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   allPosts: getPosts(state),
   user: getUser(state),
+  postsLoadingState: getPostsLoadingState(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   // someAction: arg => dispatch(reduxActionCreator(arg)),
+  fetchAllPosts: () => dispatch(fetchAllPosts()),
+  fetchPost: id => dispatch(fetchPost(id)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

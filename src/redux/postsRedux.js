@@ -1,9 +1,12 @@
+import Axios from 'axios';
+
 /* selectors */
 export const getPosts = ({posts}) => posts.data;
-export const getPostDetails = ({posts}, postId) => posts.data.filter(e => e.id === postId)[0];
+export const getPostsLoadingState = ({posts}) => posts.loading;
+export const getPostDetails = ({posts}, postId) => posts.data.filter(e => e._id === postId)[0];
 export const getUserPosts = ({posts, user}) => {
   if (user.data.type !== 'admin'){
-    return posts.data.filter(e => e.userId === user.data.id);
+    return posts.data.filter(e => e.userId === user.data._id);
   } else {
     return posts.data;
   }
@@ -19,6 +22,10 @@ const FETCH_START = createActionName('FETCH_START');
 const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
 const FETCH_ERROR = createActionName('FETCH_ERROR');
 
+const FETCH_POST_START = createActionName('FETCH_POST_START');
+const FETCH_POST_SUCCESS = createActionName('FETCH_POST_SUCCESS');
+const FETCH_POST_ERROR = createActionName('FETCH_POST_ERROR');
+
 const POST_ADD_START = createActionName('POST_ADD_START');
 const POST_ADD_SUCCESS = createActionName('POST_ADD_SUCCESS');
 const POST_ADD_ERROR = createActionName('POST_ADD_ERROR');
@@ -28,9 +35,13 @@ const POST_UPDATE_SUCCESS = createActionName('POST_UPDATE_SUCCESS');
 const POST_UPDATE_ERROR = createActionName('POST_UPDATE_ERROR');
 
 /* action creators */
-export const fetchStarted = payload => ({ payload, type: FETCH_START });
-export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
-export const fetchError = payload => ({ payload, type: FETCH_ERROR });
+export const fetchPostsStarted = payload => ({ payload, type: FETCH_START });
+export const fetchPostsSuccess = payload => ({ payload, type: FETCH_SUCCESS });
+export const fetchPostsError = payload => ({ payload, type: FETCH_ERROR });
+
+export const fetchPostStarted = payload => ({ payload, type: FETCH_POST_START });
+export const fetchPostSuccess = payload => ({ payload, type: FETCH_POST_SUCCESS });
+export const fetchPostError = payload => ({ payload, type: FETCH_POST_ERROR });
 
 export const postAddStarted = payload => ({ payload, type: POST_ADD_START });
 export const postAddSuccess = payload => ({ payload, type: POST_ADD_SUCCESS });
@@ -41,6 +52,36 @@ export const postUpdateSuccess = payload => ({ payload, type: POST_UPDATE_SUCCES
 export const postUpdateError = payload => ({ payload, type: POST_UPDATE_ERROR });
 
 /* thunk creators */
+export const fetchAllPosts = () => {
+  return (dispatch, getState) => {
+    dispatch(fetchPostsStarted());
+
+    Axios
+      .get(`http://localhost:8000/api/posts`)
+      .then(res => {
+        dispatch(fetchPostsSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchPostsError(err.message || true));
+      });
+  };
+};
+
+export const fetchPost = (id) => {
+  return (dispatch, getState) => {
+    dispatch(fetchPostStarted());
+
+    Axios
+      .get(`http://localhost:8000/api/posts/${id}`)
+      .then(res => {
+        dispatch(fetchPostSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchPostError(err.message || true));
+      });
+  };
+};
+
 export const addPost = (post) => {
   return (dispatch, getState) => {
     dispatch(postAddStarted());
@@ -104,13 +145,43 @@ export const reducer = (statePart = [], action = {}) => {
         },
       };
     }
+
+    case FETCH_POST_START: {
+      return {
+        ...statePart,
+        loading: {
+          active: true,
+          error: false,
+        },
+      };
+    }
+    case FETCH_POST_SUCCESS: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: false,
+        },
+        data: statePart.data.map(e => e.id === action.payload.id ? action.payload : e),
+      };
+    }
+    case FETCH_POST_ERROR: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: action.payload,
+        },
+      };
+    }
+
     case POST_ADD_SUCCESS: {
       return {
         ...statePart,
         data: [
           ...statePart.data,
           {
-            id: action.payload.id,
+            _id: action.payload._id,
             title: action.payload.title,
             description: action.payload.description,
             published: action.payload.published,
@@ -135,7 +206,7 @@ export const reducer = (statePart = [], action = {}) => {
         ...statePart,
         data: statePart.data.map(post => post.id === action.payload.id ? 
           {
-            id: action.payload.id,
+            _id: action.payload._id,
             title: action.payload.title,
             description: action.payload.description,
             published: action.payload.published,

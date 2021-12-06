@@ -43,13 +43,13 @@ const Component = ({className, user, addPost}) => {
   const publish = () => {
     setStatus('published');
     const payload = {
-      id: uuidv4(),
+      _id: uuidv4(),
       title: title,
       description: description,
       published: new Date().toISOString(),
       actualised: new Date().toISOString(),
       email: email,
-      userId: user.id,
+      userId: user._id,
       status: status,
       photo: attachment,
       price: price,
@@ -63,13 +63,13 @@ const Component = ({className, user, addPost}) => {
   const saveDraft = () => {
     setStatus('draft');
     const payload = {
-      id: uuidv4(),
+      _id: uuidv4(),
       title: title,
       description: description,
       published: new Date().toISOString(),
       actualised: new Date().toISOString(),
       email: email,
-      userId: user.id,
+      userId: user._id,
       status: status,
       photo: attachment,
       price: price,

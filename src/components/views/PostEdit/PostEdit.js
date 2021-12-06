@@ -45,7 +45,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
   const publish = () => {
     setStatus('published');
     const payload = {
-      id: postDetails.id,
+      _id: postDetails._id,
       title: title,
       description: description,
       published: postDetails.published,
@@ -65,7 +65,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
   const saveDraft = () => {
     setStatus('draft');
     const payload = {
-      id: postDetails.id,
+      _id: postDetails._id,
       title: title,
       description: description,
       published: postDetails.published,
@@ -83,7 +83,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
   };
   
   if(postDetails) {
-    if(user.isLoggedIn && (user.id === postDetails.userId || user.type === 'admin')){
+    if(user.isLoggedIn && (user._id === postDetails.userId || user.type === 'admin')){
       return(
         <div className={clsx(className, styles.root)}>
           <h2>change fields to update post</h2>
