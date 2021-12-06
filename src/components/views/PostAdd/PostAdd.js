@@ -12,21 +12,19 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUser, addPost } from '../../../redux/postsRedux.js';
-
-import { v4 as uuidv4 } from 'uuid';
 
 import styles from './PostAdd.module.scss';
 
 const Component = ({className, user, addPost}) => {
   const [validationError, setValidationError] = React.useState(
-    {title: true, description: true, email: true});
+    {title: true, description: true, email: false});
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = React.useState(user.email);  // email is not changable and pulled from logged-in user's email
   const [price, setPrice] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [location, setLocation] = React.useState('');
@@ -40,43 +38,39 @@ const Component = ({className, user, addPost}) => {
     return allOk;
   };
 
-  const publish = () => {
+  const publish = async () => {
     setStatus('published');
     const payload = {
-      _id: uuidv4(),
       title: title,
       description: description,
       published: new Date().toISOString(),
       actualised: new Date().toISOString(),
       email: email,
-      userId: user._id,
-      status: status,
+      status: 'published',
       photo: attachment,
       price: price,
       phone: phone,
       location: location,
     };
-    addPost(payload);
+    await addPost(payload);
     history.push('/post/myposts');
   };
 
-  const saveDraft = () => {
+  const saveDraft = async () => {
     setStatus('draft');
     const payload = {
-      _id: uuidv4(),
       title: title,
       description: description,
       published: new Date().toISOString(),
       actualised: new Date().toISOString(),
       email: email,
-      userId: user._id,
-      status: status,
+      status: 'draft',
       photo: attachment,
       price: price,
       phone: phone,
       location: location,
     };
-    addPost(payload);
+    await addPost(payload);
     history.push('/post/myposts');
   };
 
@@ -146,15 +140,7 @@ const Component = ({className, user, addPost}) => {
                     id="outlined-required"
                     label="Required"
                     placeholder="Add email"
-                    error={!(/(.+)@(.+){2,}\.(.+){2,}/.test(email))}
-                    onChange={event => {
-                      setEmail(event.target.value);
-                      setValidationError(
-                        {
-                          ...validationError, 
-                          email: !(/(.+)@(.+){2,}\.(.+){2,}/.test(email)),
-                        });
-                    }}
+                    value={user.email}
                   />
                 </TableCell>
               </TableRow>
@@ -231,7 +217,7 @@ const Component = ({className, user, addPost}) => {
           </Table>
         </TableContainer>
 
-        <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
+        <Button variant="contained" onClick={() => history.goBack()} sx={{ mt: 1 }} >Cancel</Button>
         <Button variant="contained" onClick={() => saveDraft()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
         <Button variant="contained" onClick={() => publish()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
 

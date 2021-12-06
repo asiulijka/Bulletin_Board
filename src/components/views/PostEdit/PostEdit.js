@@ -42,7 +42,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
     return allOk;
   };
 
-  const publish = () => {
+  const publish = async () => {
     setStatus('published');
     const payload = {
       _id: postDetails._id,
@@ -51,18 +51,17 @@ const Component = ({className, user, postDetails, updatePost}) => {
       published: postDetails.published,
       actualised: new Date().toISOString(),
       email: email,
-      userId: postDetails.userId,
-      status: status,
+      status: 'published',
       photo: attachment,
       price: price,
       phone: phone,
       location: location,
     };
-    updatePost(payload);
+    await updatePost(payload);
     history.push('/post/myposts');
   };
 
-  const saveDraft = () => {
+  const saveDraft = async () => {
     setStatus('draft');
     const payload = {
       _id: postDetails._id,
@@ -71,14 +70,13 @@ const Component = ({className, user, postDetails, updatePost}) => {
       published: postDetails.published,
       actualised: new Date().toISOString(),
       email: email,
-      userId: postDetails.userId,
-      status: status,
+      status: 'draft',
       photo: attachment,
       price: price,
       phone: phone,
       location: location,
     };
-    updatePost(payload);
+    await updatePost(payload);
     history.push('/post/myposts');
   };
   
@@ -151,16 +149,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
                       id="outlined-required"
                       label="Required"
                       placeholder="Add email"
-                      defaultValue={postDetails.email}
-                      error={!(/(.+)@(.+){2,}\.(.+){2,}/.test(email))}
-                      onChange={event => {
-                        setEmail(event.target.value);
-                        setValidationError(
-                          {
-                            ...validationError, 
-                            email: !(/(.+)@(.+){2,}\.(.+){2,}/.test(email)),
-                          });
-                      }}
+                      value={postDetails.email}
                     />
                   </TableCell>
                 </TableRow>
@@ -259,7 +248,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
             </Table>
           </TableContainer>
 
-          <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/`}>Cancel</Button>
+          <Button variant="contained" onClick={() => history.goBack()} sx={{ mt: 1 }} >Cancel</Button>
           <Button variant="contained" onClick={() => saveDraft()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Save as draft</Button>
           <Button variant="contained" onClick={() => publish()} disabled={!areAllValuesOk()} sx={{ mt: 1 }} >Publish</Button>
 

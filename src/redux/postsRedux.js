@@ -109,32 +109,30 @@ export const fetchPost = (id) => {
 export const addPost = (post) => {
   return (dispatch, getState) => {
     dispatch(postAddStarted());
-    dispatch(postAddSuccess(post));
 
-    // Axios
-    //   .get(`${api.url}/api/${api.tables}`)
-    //   .then(res => {
-    //     dispatch(fetchSuccess(res.data));
-    //   })
-    //   .catch(err => {
-    //     dispatch(fetchError(err.message || true));
-    //   });
+    Axios
+      .post(`http://localhost:8000/api/posts`, post)
+      .then(res => {
+        dispatch(postAddSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(postAddError(err.message || true));
+      });
   };
 };
 
 export const updatePost = post => {
   return (dispatch, getState) => {
     dispatch(postUpdateStarted());
-    dispatch(postUpdateSuccess(post));
 
-    // Axios
-    //   .get(`${api.url}/api/${api.tables}`)
-    //   .then(res => {
-    //     dispatch(fetchSuccess(res.data));
-    //   })
-    //   .catch(err => {
-    //     dispatch(fetchError(err.message || true));
-    //   });
+    Axios
+      .put(`http://localhost:8000/api/posts`, post)
+      .then(res => {
+        dispatch(postUpdateSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(postUpdateError(err.message || true));
+      });
   };
 };
 
@@ -228,6 +226,15 @@ export const reducer = (statePart = [], action = {}) => {
       };
     }
 
+    case POST_ADD_START: {
+      return {
+        ...statePart,
+        loading: {
+          active: true,
+          error: false,
+        },
+      };
+    }
     case POST_ADD_SUCCESS: {
       return {
         ...statePart,
@@ -240,7 +247,6 @@ export const reducer = (statePart = [], action = {}) => {
             published: action.payload.published,
             actualised: action.payload.actualised,
             email: action.payload.email,
-            userId: action.payload.userId,
             status: action.payload.status,
             photo: action.payload.photo,
             price: action.payload.price,
@@ -254,18 +260,35 @@ export const reducer = (statePart = [], action = {}) => {
         },
       };
     }
+    case POST_ADD_ERROR: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: action.payload,
+        },
+      };
+    }
+
+    case POST_UPDATE_START: {
+      return {
+        ...statePart,
+        loading: {
+          active: true,
+          error: false,
+        },
+      };
+    }
     case POST_UPDATE_SUCCESS: {
       return {
         ...statePart,
-        data: statePart.data.map(post => post.id === action.payload.id ? 
+        data: statePart.data.map(post => post._id === action.payload._id ? 
           {
-            _id: action.payload._id,
             title: action.payload.title,
             description: action.payload.description,
             published: action.payload.published,
             actualised: action.payload.actualised,
             email: action.payload.email,
-            userId: action.payload.userId,
             status: action.payload.status,
             photo: action.payload.photo,
             price: action.payload.price,
@@ -280,6 +303,16 @@ export const reducer = (statePart = [], action = {}) => {
         },
       };
     }
+    case POST_UPDATE_ERROR: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: action.payload,
+        },
+      };
+    }
+
     default:
       return statePart;
   }

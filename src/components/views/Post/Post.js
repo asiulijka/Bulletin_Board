@@ -8,12 +8,12 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { getUser, getPostDetails, fetchPost, getPostsLoadingState } from '../../../redux/postsRedux.js';
 
-import Container from '@mui/material/Container';
 import styles from './Post.module.scss';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
 
 
 const Component = ({className, match: {params: {id}}, user, postDetails, fetchPost, postsLoadingState}) => {

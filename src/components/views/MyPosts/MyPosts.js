@@ -39,7 +39,7 @@ const Component = ({className, myPosts, user, postsLoadingState, fetchUserPosts 
     } else {
       return (
         <div className={clsx(className, styles.root)}>
-              <TableContainer component={Paper}>
+          <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -61,7 +61,7 @@ const Component = ({className, myPosts, user, postsLoadingState, fetchUserPosts 
                       key={row._id}
                     >
                       <TableCell component="th" scope="row">
-                        {row.title}
+                        {row.title} {row.status === 'draft' ? '(DRAFT)' : null}
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row._id}`}>Check details</Button>
