@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import  { Redirect } from 'react-router-dom'
+import  { Redirect } from 'react-router-dom';
 
 import clsx from 'clsx';
 
@@ -37,33 +37,35 @@ const Component = ({className, myPosts, user}) => {
                     My Posts
                   </Typography>
                 </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Button variant="contained" color="success" sx={{ mt: 1 }} component={Link} to={`/post/add`}>Add new</Button>
-                  </TableCell>
+                <TableCell component="th" scope="row">
+                  <Button variant="contained" color="success" sx={{ mt: 1 }} component={Link} to={`/post/add`}>Add new</Button>
+                </TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
-            {myPosts.map((row) => (
-              <TableRow
-                key={row.id}
-              >
-                <TableCell component="th" scope="row">
-                  {row.title}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row.id}`}>Check details</Button>
-                  
-                </TableCell>
-              </TableRow>
-            ))}
+              {
+                myPosts.map((row) => (
+                  <TableRow
+                    key={row.id}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.title}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row.id}`}>Check details</Button>
+                      
+                    </TableCell>
+                  </TableRow>
+                ))
+              }
             </TableBody>
           </Table>
         </TableContainer>
       </div>
     );
-  };
-}
+  }
+};
  
 
 

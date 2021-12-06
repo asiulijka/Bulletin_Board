@@ -56,7 +56,7 @@ const Component = ({className, user}) => {
           </AppBar>
         </Box>
       </div>
-    )
+    );
   }
 };
 

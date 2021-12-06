@@ -12,7 +12,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUser, addPost } from '../../../redux/postsRedux.js';
@@ -24,20 +24,19 @@ import styles from './PostAdd.module.scss';
 const Component = ({className, user, addPost}) => {
   const [validationError, setValidationError] = React.useState(
     {title: true, description: true, email: true});
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [price, setPrice] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [location, setLocation] = React.useState("");
-  const [attachment, setAttachment] = React.useState("");
-  const [status, setStatus] = React.useState("");
+  const [title, setTitle] = React.useState('');
+  const [description, setDescription] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [price, setPrice] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [location, setLocation] = React.useState('');
+  const [attachment, setAttachment] = React.useState('');
+  const [status, setStatus] = React.useState('');
 
   const history = useHistory();
 
   const areAllValuesOk = () => {
     const allOk = Object.values(validationError).every(e => e === false);
-    console.log('areAllValuesOk: ', allOk);
     return allOk;
   };
 
@@ -58,7 +57,7 @@ const Component = ({className, user, addPost}) => {
       location: location,
     };
     addPost(payload);
-    history.push("/post/myposts");
+    history.push('/post/myposts');
   };
 
   const saveDraft = () => {
@@ -78,7 +77,7 @@ const Component = ({className, user, addPost}) => {
       location: location,
     };
     addPost(payload);
-    history.push("/post/myposts");
+    history.push('/post/myposts');
   };
 
   if(user.isLoggedIn){
@@ -159,14 +158,6 @@ const Component = ({className, user, addPost}) => {
                   />
                 </TableCell>
               </TableRow>
-              {/* <TableRow>
-                <TableCell component="th" scope="row">
-
-                </TableCell>
-                <TableCell component="th" scope="row">
-
-                </TableCell>
-              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
@@ -236,14 +227,6 @@ const Component = ({className, user, addPost}) => {
                   </label> 
                 </TableCell>
               </TableRow>
-              {/* <TableRow>
-                <TableCell component="th" scope="row">
-
-                </TableCell>
-                <TableCell component="th" scope="row">
-
-                </TableCell>
-              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
@@ -260,12 +243,14 @@ const Component = ({className, user, addPost}) => {
         <h2>Please log in to access this page</h2>
       </div>
     );
-  };
+  }
 };
 
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  user: PropTypes.object,
+  addPost: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

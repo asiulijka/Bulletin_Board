@@ -23,15 +23,16 @@ const Component = ({className, user, postDetails}) => {
     return (
       <div className={clsx(className, styles.root)}>
                   
-        {user.isLoggedIn && (user.id == postDetails.userId || user.type == 'admin') &&
+        {user.isLoggedIn && (user.id === postDetails.userId || user.type === 'admin') &&
           <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails.id}/edit`}>Edit post</Button>
         }
 
-        {postDetails.photo != "" &&
+        {postDetails.photo !== '' &&
           <ImageList sx={{ width: 500, height: 450 }} cols={1} rowHeight={164}>
             <ImageListItem>
               <img
-                src={postDetails.photo ? postDetails.photo : ""}
+                src={postDetails.photo ? postDetails.photo : ''}
+                alt=""
               />
             </ImageListItem>
           </ImageList>
@@ -44,32 +45,34 @@ const Component = ({className, user, postDetails}) => {
         <h3>Description</h3>
         <p>{postDetails.description}</p>
 
-        {postDetails.price != "" && postDetails.price != null &&
+        {postDetails.price !== '' && postDetails.price !== null &&
           <h4>Price: $ {postDetails.price} </h4>
         }
 
-        {postDetails.location != "" && postDetails.location != null &&
+        {postDetails.location !== '' && postDetails.location !== null &&
           <h4>Location: {postDetails.location}</h4>
         }
 
         <h4>Contact me via email: {postDetails.email}</h4>
         
-        {postDetails.phone != "" && postDetails.phone != null &&
+        {postDetails.phone !== '' && postDetails.phone !== null &&
           <h4>Contact me via phone: {postDetails.phone}</h4>
         }
       </div>
     );
-  };
+  }
 };
 
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  user: PropTypes.object,
+  postDetails: PropTypes.object,
 };
 
 const mapStateToProps = (state, props) => ({
   user: getUser(state),
-  postDetails: getPostDetails(state, props.match.params.id)
+  postDetails: getPostDetails(state, props.match.params.id),
 });
 
 const mapDispatchToProps = dispatch => ({

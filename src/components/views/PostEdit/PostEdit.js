@@ -14,7 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUser, getPostDetails, updatePost } from '../../../redux/postsRedux.js';
@@ -59,7 +59,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
       location: location,
     };
     updatePost(payload);
-    history.push("/post/myposts");
+    history.push('/post/myposts');
   };
 
   const saveDraft = () => {
@@ -79,11 +79,11 @@ const Component = ({className, user, postDetails, updatePost}) => {
       location: location,
     };
     updatePost(payload);
-    history.push("/post/myposts");
+    history.push('/post/myposts');
   };
   
   if(postDetails) {
-    if(user.isLoggedIn && (user.id == postDetails.userId || user.type == 'admin')){
+    if(user.isLoggedIn && (user.id === postDetails.userId || user.type === 'admin')){
       return(
         <div className={clsx(className, styles.root)}>
           <h2>change fields to update post</h2>
@@ -191,7 +191,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
                       id="outlined-basic"
                       startAdornment={<InputAdornment position="start">$</InputAdornment>}
                       placeholder="Add price"
-                      defaultValue={postDetails.price ? postDetails.price : ""}
+                      defaultValue={postDetails.price ? postDetails.price : ''}
                       onChange={event => setPrice(event.target.value)}
                     />
                   </TableCell>
@@ -205,7 +205,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
                       id="outlined-basic" 
                       label="Add phone" 
                       placeholder="Add phone number"
-                      defaultValue={postDetails.phone ? postDetails.phone : ""}
+                      defaultValue={postDetails.phone ? postDetails.phone : ''}
                       onChange={event => setPhone(event.target.value)}
                     />
                   </TableCell>
@@ -219,7 +219,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
                       id="outlined-basic" 
                       label="Add location" 
                       placeholder="Add location"
-                      defaultValue={postDetails.location ? postDetails.location : ""}
+                      defaultValue={postDetails.location ? postDetails.location : ''}
                       onChange={event => setLocation(event.target.value)}
                     />
                   </TableCell>
@@ -243,7 +243,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
                       </Button>
                     </label> 
                     <Typography component='div' variant="p">
-                      Current picture: {postDetails.photo ? postDetails.photo : ""}
+                      Current picture: {postDetails.photo ? postDetails.photo : ''}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -271,7 +271,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
           <h2>You are not permitted to do changes to this post</h2>
         </div>
       );
-    };
+    }
   } else {
     return (
       <div className={clsx(className, styles.root)}>
@@ -284,11 +284,14 @@ const Component = ({className, user, postDetails, updatePost}) => {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  user: PropTypes.object, 
+  postDetails: PropTypes.object, 
+  updatePost: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => ({
   user: getUser(state),
-  postDetails: getPostDetails(state, props.match.params.id)
+  postDetails: getPostDetails(state, props.match.params.id),
 });
 
 const mapDispatchToProps = dispatch => ({

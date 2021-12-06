@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import { Header } from '../Header/Header';
-import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 
 import { connect } from 'react-redux';
@@ -23,7 +22,7 @@ const Component = ({className, children}) => {
         {children}
       </Container>
     </div>
-  )
+  );
 };
 
 Component.propTypes = {

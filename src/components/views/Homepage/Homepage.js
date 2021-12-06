@@ -41,20 +41,21 @@ const Component = ({className, user, allPosts}) => {
           </TableHead>
 
           <TableBody>
-          {allPosts.map((row) => (
-            <TableRow
-              key={row.id}
-  //                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.title}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row.id}`}>Check details</Button>
-                
-              </TableCell>
-            </TableRow>
-          ))}
+            {
+              allPosts.map((row) => (
+                <TableRow
+                  key={row.id}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.title}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${row.id}`}>Check details</Button>
+                    
+                  </TableCell>
+                </TableRow>
+              ))
+            }
           </TableBody>
         </Table>
       </TableContainer>
@@ -67,6 +68,8 @@ const Component = ({className, user, allPosts}) => {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  user: PropTypes.object,
+  allPosts: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({

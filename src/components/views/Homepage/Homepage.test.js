@@ -4,7 +4,13 @@ import { HomepageComponent } from './Homepage';
 
 describe('Component Homepage', () => {
   it('should render without crashing', () => {
-    const component = shallow(<HomepageComponent />);
+    const sampleUser = {
+      id: 'test_id',
+      email: 'test_email',
+      type: 'test_type',
+      isLoggedIn: true,
+    };
+    const component = shallow(<HomepageComponent allPosts={[]} user={sampleUser} />);
     expect(component).toBeTruthy();
   });
 });

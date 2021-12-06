@@ -2,11 +2,11 @@
 export const getPosts = ({posts}) => posts.data;
 export const getPostDetails = ({posts}, postId) => posts.data.filter(e => e.id === postId)[0];
 export const getUserPosts = ({posts, user}) => {
-  if (user.data.type != 'admin'){
+  if (user.data.type !== 'admin'){
     return posts.data.filter(e => e.userId === user.data.id);
   } else {
     return posts.data;
-  };
+  }
 };
 export const getUser = ({user}) => user.data;
 
@@ -128,12 +128,12 @@ export const reducer = (statePart = [], action = {}) => {
           active: false,
           error: false,
         },
-      }
+      };
     }
     case POST_UPDATE_SUCCESS: {
       return {
         ...statePart,
-        data: statePart.data.map(post => post.id == action.payload.id ? 
+        data: statePart.data.map(post => post.id === action.payload.id ? 
           {
             id: action.payload.id,
             title: action.payload.title,
@@ -154,7 +154,7 @@ export const reducer = (statePart = [], action = {}) => {
           active: false,
           error: false,
         },
-      }
+      };
     }
     default:
       return statePart;
