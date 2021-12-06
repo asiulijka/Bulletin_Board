@@ -17,7 +17,8 @@ import Typography from '@mui/material/Typography';
 import { Link, useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { getUser, getPostDetails, updatePost } from '../../../redux/postsRedux.js';
+import { getPostDetails, updatePost } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/userRedux.js';
 
 import styles from './PostEdit.module.scss';
 
@@ -81,7 +82,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
   };
   
   if(postDetails) {
-    if(user.isLoggedIn && (user._id === postDetails.userId || user.type === 'admin')){
+    if(user.isLoggedIn && (user.email === postDetails.email || user.type === 'admin')){
       return(
         <div className={clsx(className, styles.root)}>
           <h2>change fields to update post</h2>
@@ -150,6 +151,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
                       label="Required"
                       placeholder="Add email"
                       value={postDetails.email}
+                      disabled
                     />
                   </TableCell>
                 </TableRow>

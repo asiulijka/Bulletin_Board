@@ -7,7 +7,7 @@ import { Header } from '../Header/Header';
 import Container from '@mui/material/Container';
 
 import { connect } from 'react-redux';
-import { getUser } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/userRedux.js';
 
 import styles from './MainLayout.module.scss';
 

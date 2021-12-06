@@ -15,7 +15,8 @@ import Paper from '@mui/material/Paper';
 import { useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { getUser, addPost } from '../../../redux/postsRedux.js';
+import { addPost } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/userRedux.js';
 
 import styles from './PostAdd.module.scss';
 

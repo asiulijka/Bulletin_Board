@@ -5,7 +5,8 @@ import  { Link, Redirect } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser, getUserPosts, fetchUserPosts, getPostsLoadingState } from '../../../redux/postsRedux.js';
+import { getUserPosts, fetchUserPosts, getPostsLoadingState } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/userRedux.js';
 
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';

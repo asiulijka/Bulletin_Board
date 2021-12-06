@@ -17,7 +17,8 @@ import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { connect } from 'react-redux';
-import { getPublishedPosts, getUser, fetchAllPosts, getPostsLoadingState, fetchPost } from '../../../redux/postsRedux.js';
+import { getPublishedPosts, fetchAllPosts, getPostsLoadingState, fetchPost } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/userRedux.js';
 
 import styles from './Homepage.module.scss';
 

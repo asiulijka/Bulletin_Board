@@ -1,26 +1,33 @@
 /* selectors */
-export const getAll = ({users}) => users.data;
+export const getUser = ({user}) => user.data;
 
 /* action name creator */
 const reducerName = 'users';
 const createActionName = name => `app/${reducerName}/${name}`;
 
 /* action types */
-const FETCH_START = createActionName('FETCH_START');
-const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
-const FETCH_ERROR = createActionName('FETCH_ERROR');
+const USER_TYPE_CHANGE_START = createActionName('USER_TYPE_CHANGE_START');
+const USER_TYPE_CHANGE_SUCCESS = createActionName('USER_TYPE_CHANGE_SUCCESS');
+const USER_TYPE_CHANGE_ERROR = createActionName('FETCH_ERROR');
 
 /* action creators */
-export const fetchStarted = payload => ({ payload, type: FETCH_START });
-export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
-export const fetchError = payload => ({ payload, type: FETCH_ERROR });
+export const userTypeChangeStarted = payload => ({ payload, type: USER_TYPE_CHANGE_START });
+export const userTypeChangeSuccess = payload => ({ payload, type: USER_TYPE_CHANGE_SUCCESS });
+export const userTypeChangeError = payload => ({ payload, type: USER_TYPE_CHANGE_ERROR });
 
 /* thunk creators */
+export const changeUserType = userType => {
+  return (dispatch, getState) => {
+    dispatch(userTypeChangeStarted());
+    dispatch(userTypeChangeSuccess(userType)); // no DB integration yet
+    console.log(userType);
+  };
+};
 
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
   switch (action.type) {
-    case FETCH_START: {
+    case USER_TYPE_CHANGE_START: {
       return {
         ...statePart,
         loading: {
@@ -29,17 +36,20 @@ export const reducer = (statePart = [], action = {}) => {
         },
       };
     }
-    case FETCH_SUCCESS: {
+    case USER_TYPE_CHANGE_SUCCESS: {
       return {
         ...statePart,
         loading: {
           active: false,
           error: false,
         },
-        data: action.payload,
+        data: {
+          ...statePart.data,
+          type: action.payload,
+        },
       };
     }
-    case FETCH_ERROR: {
+    case USER_TYPE_CHANGE_ERROR: {
       return {
         ...statePart,
         loading: {

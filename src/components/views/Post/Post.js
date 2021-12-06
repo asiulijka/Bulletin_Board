@@ -6,7 +6,8 @@ import  { Link, Redirect } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser, getPostDetails, fetchPost, getPostsLoadingState } from '../../../redux/postsRedux.js';
+import { getPostDetails, fetchPost, getPostsLoadingState } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/userRedux.js';
 
 import styles from './Post.module.scss';
 import ImageList from '@mui/material/ImageList';
@@ -36,7 +37,7 @@ const Component = ({className, match: {params: {id}}, user, postDetails, fetchPo
       return (
         <div className={clsx(className, styles.root)}>
                     
-          {user.isLoggedIn && (user._id === postDetails.userId || user.type === 'admin') &&
+          {user.isLoggedIn && (user.email === postDetails.email || user.type === 'admin') &&
             <Button variant="contained" sx={{ mt: 1 }} component={Link} to={`/post/${postDetails._id}/edit`}>Edit post</Button>
           }
 

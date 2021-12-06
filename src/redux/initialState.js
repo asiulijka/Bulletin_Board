@@ -3,7 +3,7 @@ export const initialState = {
     data: {
       _id: 2,
       email: 'jo@test.com',
-      type: 'admin',
+      type: 'user',
       isLoggedIn: true,
     },
     loading: {

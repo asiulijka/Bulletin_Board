@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser } from '../../../redux/postsRedux.js';
+import { getUser, changeUserType } from '../../../redux/userRedux.js';
+
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,11 +14,22 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import styles from './Header.module.scss';
 
 
-const Component = ({className, user}) => {
+const Component = ({className, user, changeUserType}) => {
+  const [userType, setUserType] = React.useState('user');
+
+  const handleChange = (event) => {
+    setUserType(event.target.value);
+    changeUserType(event.target.value);
+  };
+
   if(user.isLoggedIn){
     return (
       <div className={clsx(className, styles.root)}>
@@ -34,6 +46,22 @@ const Component = ({className, user}) => {
                 <Button component={Link} to="/logout" color="inherit" sx={{ flexGrow: 1 }}>
                   LOG OUT
                 </Button>
+
+                <Box sx={{ minWidth: 120, flexGrow: 1 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="user-type-select-label">UserType</InputLabel>
+                    <Select
+                      labelId="user-type-select-label"
+                      id="user-type-select"
+                      value={userType}
+                      label="UserType"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={'user'}>User</MenuItem>
+                      <MenuItem value={'admin'}>Admin</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </Toolbar>
             </Container>
           </AppBar>
@@ -72,6 +100,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   // someAction: arg => dispatch(reduxActionCreator(arg)),
+  changeUserType: userType => dispatch(changeUserType(userType)),
 });
 
 const HeaderContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
