@@ -31,7 +31,7 @@ const Component = ({className, user, postDetails, updatePost}) => {
   const [price, setPrice] = React.useState(postDetails.price);
   const [phone, setPhone] = React.useState(postDetails.phone);
   const [location, setLocation] = React.useState(postDetails.location);
-  const [attachment, setAttachment] = React.useState(postDetails.attachment);
+  const [attachment, setAttachment] = React.useState(postDetails.photo);
   const [status, setStatus] = React.useState(postDetails.status);
   
   const history = useHistory();

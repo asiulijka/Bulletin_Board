@@ -26,9 +26,7 @@ const Component = ({className, myPosts, user}) => {
   } else {
     return (
       <div className={clsx(className, styles.root)}>
-        <h2>MyPosts</h2>
-
-        <TableContainer component={Paper}>
+             <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>

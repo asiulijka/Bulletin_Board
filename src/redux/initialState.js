@@ -1,10 +1,10 @@
 export const initialState = {
   user: {
     data: {
-      id: 1,
+      id: 2,
       email: 'jo@test.com',
-      type: 'user',
-      isLoggedIn: true,
+      type: 'admin',
+      isLoggedIn: false,
     },
     loading: {
       active: false,
